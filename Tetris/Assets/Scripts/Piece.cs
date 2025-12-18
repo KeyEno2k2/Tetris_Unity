@@ -1,3 +1,4 @@
+using Unity.Mathematics;
 using UnityEngine;
 
 public class Piece : MonoBehaviour
@@ -24,4 +25,35 @@ public class Piece : MonoBehaviour
         }
         
     }
+
+    public void Update()
+    {
+        this.board.Clear(this);
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            Move(Vector2Int.left);
+        } else if (Input.GetKeyDown(KeyCode.D))
+        {
+            Move(Vector2Int.right);
+        } 
+
+        this.board.Set(this);
+    }
+
+    private bool Move(Vector2Int translation)
+    {
+        Vector3Int newPosition = this.position;
+        newPosition.x += translation.x;
+        newPosition.y += translation.y;
+
+        bool valid = this.board.IsValidPosition(this, newPosition);
+
+        if (valid)
+        {
+            this.position = newPosition;
+        }
+        return valid;
+    }
+
+    
 }
